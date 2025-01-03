@@ -1,6 +1,6 @@
 {
     "name": "cloudwatch-logger-npm",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "A simple CloudWatch Logger for Node.js applications.",

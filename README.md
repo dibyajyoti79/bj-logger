@@ -13,6 +13,9 @@ npm install cloudwatch-logger-npm
 ```typescript
 import { Logger } from 'cloudwatch-logger-npm'
 
+// first argument is the service name
+// second argument is the log group name
+// third argument is the log stream name
 const logger = new Logger('CM', 'TestLogGroup', 'TestLogStream')
 
 logger.error({

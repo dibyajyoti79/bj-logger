@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "description": "A simple CloudWatch Logger for Node.js applications.",
     "scripts": {
         "dist": "npx tsc",
         "test": "ts-node tests/Logger.test.ts",
@@ -18,7 +19,6 @@
     },
     "author": "Dibyajyoti Mahuri",
     "license": "MIT",
-    "description": "",
     "lint-staged": {
         "*.ts": [
             "npm run lint:fix",

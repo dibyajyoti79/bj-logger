@@ -15,7 +15,7 @@ import { Logger } from 'cloudwatch-logger-npm'
 
 const logger = new Logger('CM', 'TestLogGroup', 'TestLogStream')
 
-await logger.error({
+logger.error({
     message: 'This is a error test log entry.',
     traceId: '1234567890',
     body: {

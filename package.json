@@ -1,9 +1,9 @@
 {
     "name": "bj-logger",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "description": "A simple CloudWatch Logger for Node.js applications.",
+    "description": "A simple logger which can support multiple transports and log levels.",
     "scripts": {
         "dist": "npx tsc",
         "test": "ts-node tests/Logger.test.ts",

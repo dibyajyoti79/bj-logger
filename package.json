@@ -1,6 +1,6 @@
 {
     "name": "cloudwatch-logger-npm",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "A simple CloudWatch Logger for Node.js applications.",
@@ -45,7 +45,6 @@
     "dependencies": {
         "@aws-sdk/client-cloudwatch-logs": "^3.721.0",
         "dotenv": "^16.4.7",
-        "express": "^4.21.2",
         "uuid": "^11.0.3"
     },
     "keywords": [

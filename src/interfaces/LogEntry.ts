@@ -1,6 +1,7 @@
 export interface LogEntry {
     message: string
-    traceId: string
+    service: string
+    traceId?: string
     timestamp?: string
     body?: Record<string, any>
 }

@@ -1,42 +1,135 @@
-# CloudWatch Logger NPM
+# BJ Logger
 
-A simple CloudWatch Logger for Node.js applications.
+A centralized logger for Node.js applications. This package provides a simple way to log messages to CloudWatch Logs, as well as to a file. It also supports multiple transports, allowing you to log to multiple destinations.
 
 ## Installation
 
+To install the package, run the following command:
+
 ```bash
-npm install cloudwatch-logger-npm
+npm install bj-logger
 ```
 
 ## Usage
 
+### Basic Usage
+
+To use the package, you need to create an instance of the `Logger` class and pass in the service name and any transports you want to use. Here's an example:
+
 ```typescript
-import { Logger } from 'cloudwatch-logger-npm'
+import { Logger, ConsoleTransport, CloudWatchTransport } from 'bj-logger'
 
-// first argument is the service name
-// second argument is the log group name
-// third argument is the log stream name
-const logger = new Logger('CM', 'TestLogGroup', 'TestLogStream')
+const logger = new Logger('MyService', [
+    new ConsoleTransport(),
+    new CloudWatchTransport({
+        region: process.env.AWS_REGION,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        logGroupName: 'MyLogGroup',
+        logStreamName: 'MyLogStream'
+    })
+])
 
-logger.error({
-    message: 'This is a error test log entry.',
-    traceId: '1234567890',
+logger.info('This is a log message')
+```
+
+In this example, we're creating a `Logger` instance with the service name "MyService". We're also passing in two transports: a `ConsoleTransport` and a `CloudWatchTransport`. The `ConsoleTransport` logs to the console, while the `CloudWatchTransport` logs to CloudWatch Logs.
+
+### Logging to a File
+
+You can also log to a file by creating a `FileTransport` and passing in the path to the log file. Here's an example:
+
+```typescript
+import { Logger, FileTransport } from 'bj-logger'
+
+const logger = new Logger('MyService', [new FileTransport('log/app.log')])
+
+logger.info('This is a log message')
+```
+
+In this example, we're creating a `Logger` instance with the service name "MyService". We're also passing in a `FileTransport` that logs to a file named "app.log" in the "log" directory.
+
+### Logging to Multiple Transports
+
+You can log to multiple transports by passing in an array of transports to the `Logger` constructor. Here's an example:
+
+```typescript
+import { Logger, ConsoleTransport, CloudWatchTransport, FileTransport } from 'bj-logger'
+
+const logger = new Logger('MyService', [
+    new ConsoleTransport(),
+    new CloudWatchTransport({
+        region: process.env.AWS_REGION,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        logGroupName: 'MyLogGroup',
+        logStreamName: 'MyLogStream'
+    }),
+    new FileTransport('log/app.log')
+])
+
+logger.info('This is a log message')
+```
+
+In this example, we're creating a `Logger` instance with the service name "MyService". We're also passing in three transports: a `ConsoleTransport`, a `CloudWatchTransport`, and a `FileTransport`. The `ConsoleTransport` logs to the console, the `CloudWatchTransport` logs to CloudWatch Logs, and the `FileTransport` logs to a file named "app.log" in the "log" directory.
+
+### Logging with Structured Data
+
+You can log structured data by passing in an object with the `message`, `service`, `traceId`, `timestamp`, and `body` properties to the `Logger` constructor. Here's an example:
+
+```typescript
+import { Logger, ConsoleTransport, CloudWatchTransport, FileTransport } from 'bj-logger'
+
+const logger = new Logger('MyService', [
+    new ConsoleTransport(),
+    new CloudWatchTransport({
+        region: process.env.AWS_REGION,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        logGroupName: 'MyLogGroup',
+        logStreamName: 'MyLogStream'
+    }),
+    new FileTransport('log/app.log')
+])
+
+logger.info({
+    message: 'This is a log message',
+    service: 'MyService',
+    traceId: '12345678-1234-1234-1234-123456789012',
+    timestamp: new Date().toISOString(),
     body: {
-        test: 'test'
+        key1: 'value1',
+        key2: 'value2'
     }
 })
 ```
 
-## Configuration
+In this example, we're creating a `Logger` instance with the service name "MyService". We're also passing in three transports: a `ConsoleTransport`, a `CloudWatchTransport`, and a `FileTransport`. The `ConsoleTransport` logs to the console, the `CloudWatchTransport` logs to CloudWatch Logs, and the `FileTransport` logs to a file named "app.log" in the "log" directory.
 
-Create a `.env` file in the root directory of your project and add the following variables:
+### Logging with Custom Levels
 
-```bash
-AWS_ACCESS_KEY_ID=your-access-key-id
-AWS_SECRET_ACCESS_KEY=your-secret-access-key
-AWS_REGION=aws-region
+You can log with custom levels by passing in a string or an object with the `level` property to the `Logger` constructor. Here's an example:
+
+```typescript
+import { Logger, ConsoleTransport, CloudWatchTransport, FileTransport } from 'bj-logger'
+
+const logger = new Logger('MyService', [
+    new ConsoleTransport(),
+    new CloudWatchTransport({
+        region: process.env.AWS_REGION,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        logGroupName: 'MyLogGroup',
+        logStreamName: 'MyLogStream'
+    }),
+    new FileTransport('log/app.log')
+])
+
+logger.info('This is a log message')
+logger.warn('This is a warning message')
+logger.error('This is an error message')
 ```
 
-## License
+In this example, we're creating a `Logger` instance with the service name "MyService". We're also passing in three transports: a `ConsoleTransport`, a `CloudWatchTransport`, and a `FileTransport`. The `ConsoleTransport` logs to the console, the `CloudWatchTransport` logs to CloudWatch Logs, and the `FileTransport` logs to a file named "app.log" in the "log" directory.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+The `Logger` instance has methods for logging at different log levels, such as `info`, `warn`, and `error`. Each method takes a string or an object as its argument. If you pass a string, it will be treated as the message to log. If you pass an object, it will be treated as the log entry.
